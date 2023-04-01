@@ -9,25 +9,38 @@
 <style>
 body {
   background-color: linen;
-  padding-top: 15px;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-top: 1em;
+  padding-left: 4em;
+  padding-right: 4em;
 }
-h1, h2, h3 {
+h1 {
+  font-size: 2em;
   color: maroon;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+h2 {
+  font-size: 1.3em;
+  color: maroon;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 span {
+  font-size: 1.3em;
   display: inline-block;
   white-space: nowrap;
-  background-color: #c0c0c0;
-  border: 1px solid #a0a0a0;
-  border-radius: 8px;
+  background-color: #d0d0d0;
+  border: 1px solid #b0b0b0;
+  border-radius: 1em;
   cursor: pointer;
-  margin-bottom: 20px;
-  margin-right: 15px;
-  padding: 10px;
+  margin-bottom: 1.5em;
+  margin-right: 1.5em;
+  padding: 1em;
+}
+@media screen and (max-width: 1010px) {
+  body {
+    font-size: 200%;
+  }
 }
 </style>
 <script>
@@ -66,7 +79,7 @@ foreach ($files as $key => $value) {
     continue;
   }
   if (is_dir(dirname(__FILE__) . '/data/' . $value)) {
-    print("<h3>{$value}</h3>");
+    print("<h2>{$value}</h2>");
     render_buttons(dirname(__FILE__) . '/data/' . $value);
   }
 }
