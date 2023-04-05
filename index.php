@@ -3,7 +3,7 @@
   License: GPLv3
   Homepage: https://github.com/mathisdt/quotes
 */ ?>
-<html>
+<html lang="de">
 <head>
 <title>Zitate</title>
 <style>
@@ -37,6 +37,14 @@ span {
   margin-right: 1.5em;
   padding: 1em;
 }
+label {
+    font-size: 1.2em;
+}
+fieldset {
+    padding-left: 0;
+    margin-left: 0;
+    border: none;
+}
 @media screen and (max-width: 1010px) {
   body {
     font-size: 200%;
@@ -44,19 +52,34 @@ span {
 }
 </style>
 <script>
-function play(filename) {
-  var source = document.getElementById('audioSource');
-  source.src = filename;
-  var audio = document.getElementById('audio');
-  audio.load();
-  audio.play();
+function handle(filename) {
+    if (document.getElementById('buttonShouldPlay').checked) {
+        var source = document.getElementById('audioSource');
+        source.src = filename;
+        var audio = document.getElementById('audio');
+        audio.load();
+        audio.play();
+    } else if (document.getElementById('buttonShouldDownload').checked) {
+        const link = document.createElement("a");
+        link.style.display = "none";
+        link.href = filename;
+        link.download = filename;
+
+        document.body.appendChild(link);
+        link.click();
+
+        setTimeout(() => {
+            URL.revokeObjectURL(link.href);
+            link.parentNode.removeChild(link);
+        }, 0);
+    }
 }
 </script>
 </head>
 <body>
 <h1>Zitate</h1>
 <audio id="audio">
-  <source id="audioSource" src=""></source>
+  <source id="audioSource" src="" />
 </audio>
 <?php
 
@@ -66,7 +89,7 @@ function render_buttons($directory) {
   foreach ($files as $key => $value) {
     if (is_file($directory . '/' . $value) && preg_match('/\.mp3$/', $value)) {
       $name = preg_replace('/\.mp3$/', '', $value);
-      print("<span onclick='play(\"{$subdir}/{$value}\");'>{$name}</span> ");
+      print("<span onclick='handle(\"{$subdir}/{$value}\");'>{$name}</span> ");
     }
   }
 }
@@ -85,5 +108,15 @@ foreach ($files as $key => $value) {
 }
 
 ?>
+<br/>
+<br/>
+<br/>
+<label for="buttonAction" style="color: maroon; font-weight: bold;">Buttons sollen</label>
+<fieldset name="buttonAction" id="buttonAction">
+    <input type="radio" name="buttonAction" id="buttonShouldPlay" value="play" checked="checked" />
+    <label for="buttonShouldPlay">abspielen</label>
+    <input type="radio" name="buttonAction" id="buttonShouldDownload" value="download"/>
+    <label for="buttonShouldDownload">herunterladen</label>
+</fieldset>
 </body>
 </html>
